@@ -1,15 +1,67 @@
 #pragma once
 
 #include <chrono>
-#include <ctime>
+#include <deque>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <mutex>
 #include <ostream>
+#include <queue>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace Logger {
 
 namespace {
+
+template <typename T> std::ostream &logIteratorable(std::ostream &os, T const &vec) {
+  os << '[';
+  for (auto it = vec.cbegin(); it != vec.cend(); it++) {
+    os << *it;
+    if (it != vec.cend() - 1) { os << ","; }
+  }
+  return os << ']';
+}
+template <typename T> std::ostream &operator<<(std::ostream &os, std::vector<T> const &vec) {
+  return logIteratorable(os, vec);
+}
+template <typename T> std::ostream &operator<<(std::ostream &os, std::stack<T> const &vec) {
+  return logIteratorable(os, vec);
+}
+template <typename T> std::ostream &operator<<(std::ostream &os, std::queue<T> const &vec) {
+  return logIteratorable(os, vec);
+}
+template <typename T> std::ostream &operator<<(std::ostream &os, std::unordered_set<T> const &vec) {
+  return logIteratorable(os, vec);
+}
+template <typename T> std::ostream &operator<<(std::ostream &os, std::deque<T> const &vec) {
+  return logIteratorable(os, vec);
+}
+
+template <typename T1, typename T2> std::ostream &operator<<(std::ostream &os, std::pair<T1, T2> const &pair) {
+  return os << pair.first << ':' << pair.second;
+}
+template <typename T> std::ostream &logKeyValues(std::ostream &os, T const &map) {
+  os << '{';
+  std::size_t size = map.size();
+  for (auto it = map.cbegin(); it != map.cend(); it++) {
+    os << (*it);
+    size--;
+    if (size != 0) { os << ","; }
+  }
+  return os << '}';
+}
+template <typename K, typename V> std::ostream &operator<<(std::ostream &os, std::map<K, V> const &map) {
+  return logKeyValues(os, map);
+}
+template <typename K, typename V> std::ostream &operator<<(std::ostream &os, std::unordered_map<K, V> const &map) {
+  return logKeyValues(os, map);
+}
+
 class Logger {
 public:
   static Logger &getInstance() noexcept {
@@ -49,6 +101,7 @@ private:
     _log(std::forward<Args>(args)...);
   }
 };
+
 }; // namespace
 
 inline void setLoggerPostion(const char *path) { Logger::getInstance().setOutput(path); }

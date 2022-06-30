@@ -81,13 +81,13 @@ public:
   }
 
 private:
-  Logger() noexcept { logger_ = &std::cerr; }
+  Logger() noexcept { logger_ = &std::cout; }
   Logger(Logger const &) = delete;
   Logger(Logger &&) = delete;
   Logger &operator=(Logger const &) = delete;
   Logger &operator=(Logger &&) = delete;
   ~Logger() {
-    if (logger_ != &std::cerr) { delete logger_; }
+    if (logger_ != &std::cout) { delete logger_; }
   }
 
 private:

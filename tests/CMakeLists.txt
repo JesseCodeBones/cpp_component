@@ -1,0 +1,3 @@
+add_executable(memory_manager_test memory_manager.cpp)
+target_link_libraries(memory_manager_test gtest_main)
+gtest_discover_tests(memory_manager_test)

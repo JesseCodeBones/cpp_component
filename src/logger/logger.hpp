@@ -1,5 +1,6 @@
 #pragma once
 
+#include <_types/_uint8_t.h>
 #include <chrono>
 #include <deque>
 #include <fstream>
@@ -17,7 +18,7 @@
 namespace Logger {
 
 namespace {
-
+inline std::ostream &operator<<(std::ostream &os, uint8_t t) { return os << static_cast<int>(t); }
 template <typename T> std::ostream &logIteratorable(std::ostream &os, T const &vec) {
   os << '[';
   for (auto it = vec.cbegin(); it != vec.cend(); it++) {
